@@ -48,7 +48,7 @@ class GildedRose
 
 
   def update_quality()
-    @items.each do |item| # item = Item.new("Conjured", 10, 40)
+    @items.each do |item|
 
       if item.name == "Aged Brie"
         aged_brie_update_quality(item)
