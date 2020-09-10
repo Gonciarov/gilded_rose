@@ -1,6 +1,6 @@
 # Specification
 
-Find it [here](https://github.com/harrylb14/gilded_rose/blob/master/gilded_rose.md).
+Find it [here](specification.md).
 
 # Run
 
