@@ -3,6 +3,36 @@ require 'gilded_rose'
 
 describe GildedRose do
 
+  it "has aged_brie_update_quality method" do
+    items = [Item.new("foo", 3, 27)]
+    GildedRose.new(items).aged_brie_update_quality(items[0])
+    expect(items[0].quality).to eq(28)
+  end
+
+  it "has backstage_passes_update_quality method" do
+    items = [Item.new("foo", 3, 27)]
+    GildedRose.new(items).backstage_passes_update_quality(items[0])
+    expect(items[0].quality).to eq(30)
+  end
+
+  it "has sulfuras_update_quality method" do
+    items = [Item.new("foo", 3, 27)]
+    GildedRose.new(items).sulfuras_update_quality(items[0])
+    expect(items[0].quality).to eq(27)
+  end
+
+  it "has conjured_update_quality method" do
+    items = [Item.new("foo", 3, 27)]
+    GildedRose.new(items).conjured_update_quality(items[0])
+    expect(items[0].quality).to eq(25)
+  end
+
+  it "has default_update_quality method" do
+    items = [Item.new("foo", 3, 27)]
+    GildedRose.new(items).default_update_quality(items[0])
+    expect(items[0].quality).to eq(26)
+  end
+
   describe "#update_quality" do
     it "does not change the name" do
       items = [Item.new("foo", 0, 0)]
@@ -60,7 +90,7 @@ describe GildedRose do
       expect(items[0].quality).to eq(42)
     end
     it "increases Quality value for passes by 3 when 5 days or less" do
-      items = [Item.new("Backstage passes to a TAFKAL80ETC concert", 1, 40)]
+      items = [Item.new("Backstage passes to a TAFKAL80ETC concert", 2, 40)]
       GildedRose.new(items).update_quality()
       expect(items[0].quality).to eq(43)
     end
@@ -69,6 +99,24 @@ describe GildedRose do
       items = [Item.new("Backstage passes to a TAFKAL80ETC concert", 0, 40)]
       GildedRose.new(items).update_quality()
       expect(items[0].quality).to eq(0)
+    end
+
+    it "Quality value for Conjured reduces twice as normal" do
+      items = [Item.new("Conjured", 10, 40)]
+      GildedRose.new(items).update_quality()
+      expect(items[0].quality).to eq(38)
+    end
+
+    it "Conjured Quality can not be negative" do
+      items = [Item.new("Conjured", 10, 0)]
+      GildedRose.new(items).update_quality()
+      expect(items[0].quality).to eq(0)
+    end
+
+    it "Conjured Quality reduces twice as normal after sell day passes" do
+      items = [Item.new("Conjured", 0, 50)]
+      GildedRose.new(items).update_quality()
+      expect(items[0].quality).to eq(46)
     end
 
     end
