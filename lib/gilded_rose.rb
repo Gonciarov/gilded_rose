@@ -4,75 +4,41 @@ class GildedRose
     @items = items
   end
 
-  def aged_brie_update_quality(item)
-    item.sell_in -= 1
-    if item.quality < 50
-      item.quality += 1
-    end
-  end
-
-  def backstage_passes_update_quality(item)
-    item.sell_in -= 1
-    if item.sell_in < 1
-      item.quality = 0
-    elsif item.sell_in < 6
-      item.quality += 3
-    elsif item.sell_in < 11
-      item.quality += 2
+  def update_sell_in_and_quality(item, sell_in_counter, quality_counter)
+    item.sell_in -= sell_in_counter
+    quality_counter = quality_counter * 2 if item.sell_in < 1
+    if item.quality >= quality_counter
+      item.quality -= quality_counter
     else
-      item.quality += 1
+      item.quality = 0
     end
+    item.quality = 50 if item.quality > 50
   end
 
-  def sulfuras_update_quality(item)
-    #update nothing
-  end
-
-  def conjured_update_quality(item)
-    item.sell_in -= 1
-    if item.sell_in > 0
-        item.quality -= 2 if item.quality > 1
-    elsif item.sell_in < 1
-      item.quality -= 4 if item.quality > 3
-    end
-  end
-
-  def default_update_quality(item)
-    item.sell_in -= 1
-    if item.sell_in > 0
-        item.quality -= 1 if item.quality > 0
-    elsif item.sell_in < 1
-      item.quality -= 2 if item.quality > 1
-    end
-  end
-
-
-  def update_quality()
+  def update()
     @items.each do |item|
-
       if item.name == "Aged Brie"
-        aged_brie_update_quality(item)
+        update_sell_in_and_quality(item, 1, -1)
       elsif item.name == "Backstage passes to a TAFKAL80ETC concert"
-        backstage_passes_update_quality(item)
+        if item.sell_in > 10
+          update_sell_in_and_quality(item, 1, -1)
+        elsif item.sell_in > 5
+          update_sell_in_and_quality(item, 1, -2)
+        elsif item.sell_in > 0
+          update_sell_in_and_quality(item, 1, -3)
+        else
+          update_sell_in_and_quality(item, 1, item.quality)
+        end
       elsif item.name == "Sulfuras, Hand of Ragnaros"
-        sulfuras_update_quality(item)
+        update_sell_in_and_quality(item, 0, 0)
       elsif item.name == "Conjured"
-        conjured_update_quality(item)
+        update_sell_in_and_quality(item, 1, 2)
       else
-        default_update_quality(item)
+        update_sell_in_and_quality(item, 1, 1)
       end
     end
   end
-
 end
-
-
-
-
-
-
-
-
 
 class Item
   attr_accessor :name, :sell_in, :quality
