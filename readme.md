@@ -26,4 +26,5 @@ $ rspec
 - First of all, I tested all existing functionality.
 - Next, added tests for new ('Conjured') items.
 - Refactored legacy code making sure methods hold single responsibility.
-- Added code for new ('Conjured') items.
+- All magic numbers to be constants.
+- Now you can add more code for new ('Conjured') items.
